@@ -1,11 +1,11 @@
+#include <charconv>
+#include <chrono>
+#include <cmath>
+#include <cstring>
+#include <iostream>
+#include <locale>
 #include <string>
 #include <vector>
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include <chrono>
-
-#include <charconv>
 
 using namespace std;
 
@@ -51,8 +51,7 @@ itype numPrimes(itype maxNum);
 int main(int argc, char* argv[])
 {
 	// Imbue with thousand separators because we have big numbers
-	std::cout.imbue(std::locale("en_US"));
-	// std::cout.imbue(std::locale(std::locale, new numpunct<char>()));
+	std::cout.imbue(std::locale(""));
 
 	argc -= 1;
 	argv += 1; // skip program name argv[0]
