@@ -51,7 +51,13 @@ itype numPrimes(itype maxNum);
 int main(int argc, char* argv[])
 {
 	// Imbue with thousand separators because we have big numbers
-	std::cout.imbue(std::locale(""));
+#ifndef __MINGW64__
+	std::locale::global(std::locale(""));
+#endif
+	// std::cout << "User-preferred locale setting is "
+	//          << std::locale().name().c_str() << '\n';		
+
+	std::cout.imbue(std::locale());
 
 	argc -= 1;
 	argv += 1; // skip program name argv[0]
@@ -95,7 +101,7 @@ int main(int argc, char* argv[])
 
 itype numPrimes(itype maxNum)
 {
-	auto numbers = new char[maxNum+1] {0};
+	auto numbers = new char[maxNum + 1] {0};
 	numbers[0] = numbers[1] = 1;
 
 	itype sqrtMaxNum = static_cast<itype>(std::sqrt(maxNum));
