@@ -51,13 +51,16 @@ itype numPrimes(itype maxNum);
 int main(int argc, char* argv[])
 {
 	// Imbue with thousand separators because we have big numbers
-#ifndef __MINGW64__
-	std::locale::global(std::locale(""));
-#endif
-	// std::cout << "User-preferred locale setting is "
-	//          << std::locale().name().c_str() << '\n';		
+	// Because of trouble with locales on MINGW64, the facet is implemented with raw force
+	// Example here: https://en.cppreference.com/w/cpp/locale/numpunct/grouping
 
-	std::cout.imbue(std::locale());
+	struct specialNumpunct : public std::numpunct<char>
+	{
+		char do_thousands_sep() const override { return ','; }
+		string do_grouping() const override { return "\3"; }
+	};
+
+	std::cout.imbue(std::locale(std::cout.getloc(), new specialNumpunct));
 
 	argc -= 1;
 	argv += 1; // skip program name argv[0]
@@ -96,6 +99,7 @@ int main(int argc, char* argv[])
 	auto t0 = std::chrono::system_clock::now();
 	cout << numPrimes(maxNum) << " primes found" << endl;
 	cout << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - t0).count() / 1000.0 << " s used" << endl;
+
 	return 0;
 }
 
@@ -119,7 +123,7 @@ itype numPrimes(itype maxNum)
 	} while (p <= sqrtMaxNum);
 
 	itype result = 0;
-	for (itype i = 2; i < maxNum; i++)
+	for (itype i = 2; i <= maxNum; i++)
 		if (numbers[i] == 0)
 			result++;
 

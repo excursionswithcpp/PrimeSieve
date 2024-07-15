@@ -1,1 +1,1 @@
-g++ PrimeSieve.cpp -O2 -std=c++17 -o PrimeSieve.exe
+g++ PrimeSieve.cpp -O3 -std=c++17 -o PrimeSieve.exe
