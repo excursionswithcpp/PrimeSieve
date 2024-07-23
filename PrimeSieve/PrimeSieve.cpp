@@ -127,5 +127,6 @@ itype numPrimes(itype maxNum)
 		if (numbers[i] == 0)
 			result++;
 
+	delete[] numbers;
 	return result;
 }
